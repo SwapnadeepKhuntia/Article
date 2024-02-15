@@ -26,9 +26,10 @@ class loginmodel extends CI_Model{
 
     public function articallist(){
        $id = $this->session->userdata("id");
-       $q = $this->db->select("article_title")
+       $q = $this->db->select("*")
+                // select("article_title,article_body")
                  ->from("artical")
-                 ->where(["id"=>$id])
+                 ->where(["user_id"==$id])
                  ->get();
         
                  return $q->result();

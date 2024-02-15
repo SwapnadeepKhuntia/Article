@@ -1,7 +1,14 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
    class Admin extends My_Controller{
-       public function login(){
+
+    // public function __construct(){
+    //   parent :: __construct;
+    //   if(! $this->session->userdata("id"))
+    //   return redirect("Admin/login");
+      // }
+    
+    public function login(){
            $this->load->library('form_validation','fv');
            $this->form_validation->set_rules("email","Email","required|trim|valid_email");
            $this->form_validation->set_rules("pass","password","trim|required|min_length[8]");
@@ -54,21 +61,21 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
         if($this->form_validation->run())
         {
-            $this->load->library("email");
+            // $this->load->library("email");
 
-            $this->email->from(set_value("email"),set_value("fname"));
-            $this->email->to("swapnadipkhutia@gmail.com");
-            $this->email->subject("Registration Gretting...");
+            // $this->email->from(set_value("email"),set_value("fname"));
+            // $this->email->to("swapnadipkhutia@gmail.com");
+            // $this->email->subject("Registration Gretting...");
 
-            $this->email->message("Thank you for Registration");
-            $this->email->set_newline("\r\n");
-            $this->email->send();
+            // $this->email->message("Thank you for Registration");
+            // $this->email->set_newline("\r\n");
+            // $this->email->send();
 
-            if(!$this->email->send()){
-              show_error($this->email->print_debugger());
-            }else{
-              echo "Your email has been sent";
-            }
+            // if(!$this->email->send()){
+            //   show_error($this->email->print_debugger());
+            // }else{
+            //   echo "Your email has been sent";
+            // }
 
         }else{
           $this->load->view("admin/registration");
@@ -80,9 +87,20 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 
        public function welcome(){
+
          $this->load->model("loginmodel","ar");
          $articales = $this->ar->articallist();
         $this->load->view("admin/dashboard",["art"=>$articales]);
        }
+
+      //  public function adduser(){
+
+      //  }
+      //  public function edituser(){
+         
+      //  }
+      //  public function deleteuser(){
+         
+      //  }
    }
 ?>
