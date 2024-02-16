@@ -3,6 +3,11 @@ include("header.php");
 ?>
 <div class="container">
     <h1>Admin form Login</h1>
+   <?php if($this->session->flashdata("login_faild")) : ?>
+    <div class="alert alert-danger">
+   <h5 class="text-danger fw-bold"> <?php echo $this->session->flashdata("login_faild"); ?> </h5>
+   </div>
+   <?php endif; ?>
 <?php echo form_open('Admin/login') ?>
 <div class="form-group">
    <div> <?php echo form_error("email"); ?></div>

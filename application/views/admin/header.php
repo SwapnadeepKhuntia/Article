@@ -15,4 +15,11 @@
     </button>
     </div>
   </div>
+    <?php
+      if($this->session->userdata("id")){
+    ?>
+      <li> <a href="<?= base_url("Admin/logout"); ?>" class="btn btn-danger">Logout</a> </li>
+    <?php
+      }
+    ?>
 </nav>

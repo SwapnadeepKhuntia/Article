@@ -3,10 +3,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
    class Admin extends My_Controller{
 
     // public function __construct(){
-    //   parent :: __construct;
-    //   if(! $this->session->userdata("id"))
+    //   parent :: __construct();
+
+    //   if(!$this->session->userdata("id"))
     //   return redirect("Admin/login");
-      // }
+    //   }
     
     public function login(){
            $this->load->library('form_validation','fv');
@@ -36,8 +37,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             
             }
             else{
-              $this->load->view("admin/login");
-              show_error("email not exits");
+              // $this->load->view("admin/login");
+              // show_error("email not exits");
+              $this->session->set_flashdata("login_faild","Invalid Username/Password");
+              return redirect("admin/login");
             }
 
           }
@@ -88,9 +91,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
        public function welcome(){
 
+        if(! $this->session->userdata("id"))
+         return redirect("Admin/login");
          $this->load->model("loginmodel","ar");
          $articales = $this->ar->articallist();
         $this->load->view("admin/dashboard",["art"=>$articales]);
+       }
+
+       public function logout(){
+        $this->session->unset_userdata("id");
+        return redirect("admin/login");
        }
 
       //  public function adduser(){
