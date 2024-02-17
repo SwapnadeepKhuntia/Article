@@ -1,22 +1,16 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
    class Admin extends My_Controller{
-
-    // public function __construct(){
-    //   parent :: __construct();
-
-    //   if(!$this->session->userdata("id"))
-    //   return redirect("Admin/login");
-    //   }
-    
+ 
     public function login(){
-           $this->load->library('form_validation','fv');
            $this->form_validation->set_rules("email","Email","required|trim|valid_email");
            $this->form_validation->set_rules("pass","password","trim|required|min_length[8]");
 
 
            $this->form_validation->set_error_delimiters("<div class='text-danger fw-bold'>","</div>");
 
+           if($this->session->userdata("id"))
+           return redirect("Admin/welcome");
 
           if($this->form_validation->run()){
             $email = $this->input->post("email");
@@ -25,14 +19,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             $this->load->model("loginmodel");
 
             $id = $this->loginmodel->isvalidate($email,$password);
-
+            echo $id;
             if($id)
             {
                   //  echo "details match";
                   //  $this->load->view("users/artical_list");
                   // $this->load->library("session");
-               $this->session->set_userdata("id",$id);
-               //  echo  $this->session->userdata("id");
+                    $this->session->set_userdata("id",$id);
+                  //  echo  $this->session->userdata("id");
                 return redirect("admin/welcome");
             
             }
@@ -54,7 +48,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
        public function registration(){
 
-        $this->load->library("form_validation");
         $this->form_validation->set_rules("fname","First name","required|trim|alpha");
         $this->form_validation->set_rules("lname","Last name","required|trim|alpha");
         $this->form_validation->set_rules("email","Email","required|trim|valid_email|is_unique[users.email]");                     
@@ -103,14 +96,38 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         return redirect("admin/login");
        }
 
-      //  public function adduser(){
+       public function addarticle(){
 
-      //  }
+       if($this->form_validation->run("add_article_rules"))
+        {
+           $post = $this->input->post();
+           $this->load->model("addarticalmodel");
+           if(!$this->addarticalmodel->addarticle($post)){
+           $this->session->set_flashdata("message","Data Add Success full");
+           $this->session->set_flashdata("message_class","alert-success");
+          }else{
+            $this->session->set_flashdata("message","Article not added plese try again");
+            $this->session->set_flashdata("message_class","alert-danger");
+          }
+          return redirect("admin/welcome");
+
+        }else{
+          $this->form_validation->set_error_delimiters("<div class='text-danger fw-bold'>","</div>");
+          $this->load->view("article/Add_article");
+        }
+       }
       //  public function edituser(){
          
       //  }
       //  public function deleteuser(){
          
       //  }
+
+      //  public function __construct(){
+      // parent :: __construct();
+
+      // if(!$this->session->userdata("id"))
+      // return redirect("Admin/login");
+      // }
    }
 ?>
