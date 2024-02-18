@@ -16,7 +16,6 @@ include("header.php");
     <table class="border border-2">
         <thead>
         <tr>
-            <th>Id</th>
             <th>Artical Tital</th>
             <th>Artical body</th>
             <th>Edit</th>
@@ -29,11 +28,20 @@ include("header.php");
         <?php if(count($art)) : ?>
         <?php foreach ($art as $artical) : ?>
             <tr>
-            <td><?=  $artical->id; ?></td>
+
             <td><?=  $artical->article_title; ?></td>
             <td><?=  $artical->article_body; ?></td>
             <td><a href="#" class="btn btn-primary">Edit</a></td>
-            <td><a href="#" class="btn btn-danger">Delete</a></td>
+            <td>
+                 <?= 
+                    form_open("admin/deletearticle"),
+                    form_hidden("id",$artical->id),
+                    form_submit(["name"=>"submit","value"=>"Delete","class"=>"btn btn-danger"]),
+                    form_close();
+                 ?>
+
+
+            </td>
             </tr>
          <?php endforeach; ?>
          <?php else: ?>

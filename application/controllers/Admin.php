@@ -48,14 +48,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
        public function registration(){
 
-        $this->form_validation->set_rules("fname","First name","required|trim|alpha");
-        $this->form_validation->set_rules("lname","Last name","required|trim|alpha");
-        $this->form_validation->set_rules("email","Email","required|trim|valid_email|is_unique[users.email]");                     
-        $this->form_validation->set_rules("pass","password","trim|required|min_length[8]");
-
-        $this->form_validation->set_error_delimiters("<div class='text-danger fw-bold'>","</div>");
-
-        if($this->form_validation->run())
+        if($this->form_validation->run("registration_rules"))
         {
             // $this->load->library("email");
 
@@ -73,7 +66,22 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             //   echo "Your email has been sent";
             // }
 
+            $post=$this->input->post();
+            $this->load->model("registrationmodel");
+           if(!$this->registrationmodel->registration($post)){
+
+              $this->session->set_flashdata("reg_message","Registration Successfull");
+              $this->session->set_flashdata("res_class","alert-success");
+           }
+           else{
+              $this->session->set_flashdata("reg_message","Registration not Successfull");
+              $this->session->set_flashdata("res_class","alert-danger");
+           }
+
+           return redirect("admin/registration");
+
         }else{
+          $this->form_validation->set_error_delimiters("<div class='text-danger fw-bold'>","</div>");
           $this->load->view("admin/registration");
         }
        }
@@ -119,9 +127,22 @@ defined('BASEPATH') OR exit('No direct script access allowed');
       //  public function edituser(){
          
       //  }
-      //  public function deleteuser(){
+       public function deletearticle(){
          
-      //  }
+        $artiid = $this->input->post("id");
+        $this->load->model("addarticalmodel");
+        if(!$this->addarticalmodel->deletearticle($artiid)){
+        $this->session->set_flashdata("message","Delete Success full");
+        $this->session->set_flashdata("message_class","alert-success");
+       }else{
+         $this->session->set_flashdata("message","Plese try again.. not deleted");
+         $this->session->set_flashdata("message_class","alert-danger");
+       }
+       return redirect("admin/welcome"); 
+
+
+
+       }
 
       //  public function __construct(){
       // parent :: __construct();

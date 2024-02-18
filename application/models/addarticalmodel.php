@@ -7,5 +7,9 @@
                       // echo "<pre>";
                       // print_r($sql);
     } 
+
+    public function deletearticle($id){
+     $this->db->delete("artical",["id"=>$id]);
+    }
 }
 ?>
